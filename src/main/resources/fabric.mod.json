@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "armortohealth",
+	"version": "${version}",
+	"name": "Armor To Health",
+	"description": "Changes Armor To Health Boost",
+	"authors": [
+		"Happy1speed"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/armortohealth/icon.jpg",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.happyspeed.armortohealth.ArmorToHealthMod"
+		],
+		"client": [
+			"net.happyspeed.armortohealth.ArmorToHealthClient"
+		],
+		"fabric-datagen": [
+			"net.happyspeed.armortohealth.ArmorToHealthDataGenerator"
+		]
+	},
+	"mixins": [
+		"armortohealth.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.8",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
