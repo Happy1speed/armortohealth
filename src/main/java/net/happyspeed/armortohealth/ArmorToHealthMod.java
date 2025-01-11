@@ -3,6 +3,7 @@ package net.happyspeed.armortohealth;
 import net.fabricmc.api.ModInitializer;
 
 import net.happyspeed.armortohealth.config.ModConfigs;
+import net.happyspeed.armortohealth.util.ModTags;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
@@ -23,5 +24,6 @@ public class ArmorToHealthMod implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Healthy Defense");
 		ModConfigs.registerConfigs();
+
 	}
 }

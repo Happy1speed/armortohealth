@@ -2,11 +2,13 @@ package net.happyspeed.armortohealth.mixin;
 
 import net.happyspeed.armortohealth.ArmorToHealthMod;
 import net.happyspeed.armortohealth.config.ModConfigs;
+import net.happyspeed.armortohealth.util.ModTags;
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.HealthBoostStatusEffect;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -76,8 +78,8 @@ abstract class LivingEntityMixin extends Entity {
 				this.damagedTime1++;
 			}
 
-			if (this.isAlive() && this.isLiving() && !this.getType().equals(EntityType.ENDER_DRAGON) && !this.getType().equals(EntityType.WITHER) && !this.getType().equals(EntityType.WARDEN)) {
-				if (ModConfigs.MOBHEALING) {
+			if (this.isAlive() && this.isLiving()) {
+				if (ModConfigs.MOBHEALING && !this.getType().isIn(ModTags.Entity.NO_NATURAL_REGEN_MOB)) {
 					if (!this.isPlayer() && !this.isOnFire() && this.damagedTime1 > ModConfigs.MOBHEALINGTIMESINCEATTACK && this.getHealth() < this.getMaxHealth()) {
 						if (this.getHealth() < this.getMaxHealth() && this.age % ModConfigs.MOBHEALINGTIME == 0) {
 							this.healing(ModConfigs.MOBHEALINGAMOUNT);
