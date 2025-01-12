@@ -1,4 +1,4 @@
-package net.happyspeed.armortohealth.mixin;
+package net.happyspeed.armortohealth.mixin.armor;
 
 import net.happyspeed.armortohealth.config.ModConfigs;
 import net.minecraft.entity.DamageUtil;
@@ -11,11 +11,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class DamageUtilMixin {
     @Inject(method = "getDamageLeft", at = @At(value = "RETURN"), cancellable = true)
     private static void ArmorOverride(float damage, float armor, float armorToughness, CallbackInfoReturnable<Float> cir) {
-        float newDamage = damage;
-        if (ModConfigs.HALFDAMAGE) {
-            newDamage = damage / 2;
+        if (ModConfigs.ARMORTOHEALTHENABLED) {
+            float newDamage = damage;
+            if (ModConfigs.HALFDAMAGE) {
+                newDamage = damage / 2;
+            }
+            cir.setReturnValue(newDamage);
+            cir.cancel();
         }
-        cir.setReturnValue(newDamage);
-        cir.cancel();
     }
 }

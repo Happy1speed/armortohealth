@@ -23,7 +23,6 @@ public class ArmorToHealthMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Healthy Defense");
-		ModConfigs.registerConfigs();
 
 	}
 }

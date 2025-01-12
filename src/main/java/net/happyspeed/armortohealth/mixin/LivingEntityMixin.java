@@ -27,12 +27,6 @@ import java.util.UUID;
 
 @Mixin(value = LivingEntity.class, priority = 507)
 abstract class LivingEntityMixin extends Entity {
-	@Shadow @Final private AttributeContainer attributes;
-
-
-	@Shadow @Nullable public abstract EntityAttributeInstance getAttributeInstance(EntityAttribute attribute);
-
-	@Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
 	@Shadow public abstract float getMaxHealth();
 
@@ -48,23 +42,7 @@ abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@Inject(method = "<init>", at = @At(value = "TAIL"))
-    private void AdjustHealth(EntityType entityType, World world, CallbackInfo ci) {
-		this.healing(this.getMaxHealth());
-	}
 
-	@Inject(method = "sendEquipmentChanges()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;sendEquipmentChanges(Ljava/util/Map;)V"))
-	private void LivingEntityEquipmentChange(CallbackInfo ci) {
-		EntityAttributeInstance entityAttributeInstance = this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
-		if (entityAttributeInstance != null) {
-			EntityAttributeModifier entityAttributeModifier = new EntityAttributeModifier(UUID.fromString(ArmorToHealthMod.AddedHealthUUID), EntityAttributes.GENERIC_MAX_HEALTH.getTranslationKey(), (this.getAttributeValue(EntityAttributes.GENERIC_ARMOR) * ModConfigs.HEALTHPERARMORPOINT) + (this.getAttributeValue(EntityAttributes.GENERIC_ARMOR_TOUGHNESS) * ModConfigs.HEALTHPERARMORTOUGHNESSPOINT), EntityAttributeModifier.Operation.ADDITION);
-			entityAttributeInstance.removeModifier(entityAttributeModifier);
-			entityAttributeInstance.addPersistentModifier(entityAttributeModifier);
-			if (this.getHealth() > this.getMaxHealth()) {
-				this.setHealth(this.getMaxHealth());
-			}
-		}
-	}
 
 	@Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;sendEntityDamage(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/damage/DamageSource;)V"), cancellable = true)
 	public void detectDamaged (DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
@@ -82,14 +60,14 @@ abstract class LivingEntityMixin extends Entity {
 				if (ModConfigs.MOBHEALING && !this.getType().isIn(ModTags.Entity.NO_NATURAL_REGEN_MOB)) {
 					if (!this.isPlayer() && !this.isOnFire() && this.damagedTime1 > ModConfigs.MOBHEALINGTIMESINCEATTACK && this.getHealth() < this.getMaxHealth()) {
 						if (this.getHealth() < this.getMaxHealth() && this.age % ModConfigs.MOBHEALINGTIME == 0) {
-							this.healing(ModConfigs.MOBHEALINGAMOUNT);
+							this.healing2(ModConfigs.MOBHEALINGAMOUNT);
 						}
 					}
 				}
 				if (ModConfigs.PLAYERPASSIVEREGEN) {
 					if (this.isPlayer() && !this.isOnFire() && this.damagedTime1 > ModConfigs.PLAYERPASSIVEREGENTIMESINCEATTACK && this.getHealth() < this.getMaxHealth()) {
 						if (this.getHealth() < this.getMaxHealth() && this.age % ModConfigs.PLAYERPASSIVEREGENTIME == 0) {
-							this.healing(ModConfigs.PLAYERPASSIVEREGENAMOUNT);
+							this.healing2(ModConfigs.PLAYERPASSIVEREGENAMOUNT);
 						}
 					}
 				}
@@ -97,7 +75,7 @@ abstract class LivingEntityMixin extends Entity {
 		}
 	}
 	@Unique
-    private void healing(float amount) {
+    private void healing2(float amount) {
 		float f = this.getHealth();
 		if (f > 0.0f) {
 			if (f + amount <= this.getMaxHealth()) {

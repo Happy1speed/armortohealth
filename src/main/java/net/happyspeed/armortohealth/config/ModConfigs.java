@@ -7,6 +7,7 @@ public class ModConfigs {
     public static SimpleConfig CONFIG;
     private static ModConfigProvider configs;
 
+    public static boolean ARMORTOHEALTHENABLED;
     public static int HEALTHPERARMORPOINT;
     public static int HEALTHPERARMORTOUGHNESSPOINT;
     public static boolean HALFDAMAGE;
@@ -30,6 +31,7 @@ public class ModConfigs {
     }
 
     private static void createConfigs() {
+        configs.addKeyValuePair(new Pair<>("armor_to_health_enabled", true));
         configs.addKeyValuePair(new Pair<>("health_per_armor_point", 4));
         configs.addKeyValuePair(new Pair<>("health_per_armor_toughness_point", 4));
         configs.addKeyValuePair(new Pair<>("half_damage", false));
@@ -44,6 +46,7 @@ public class ModConfigs {
     }
 
     private static void assignConfigs() {
+        ARMORTOHEALTHENABLED = CONFIG.getOrDefault("armor_to_health_enabled", true);
         HEALTHPERARMORPOINT = CONFIG.getOrDefault("health_per_armor_point", 4);
         HEALTHPERARMORTOUGHNESSPOINT = CONFIG.getOrDefault("health_per_armor_toughness_point", 4);
         HALFDAMAGE = CONFIG.getOrDefault("half_damage", false);

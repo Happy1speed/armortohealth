@@ -2,14 +2,16 @@
   "required": true,
   "package": "net.happyspeed.armortohealth.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "net.happyspeed.armortohealth.ModMixinPlugin",
   "mixins": [
-    "DamageUtilMixin",
+    "armor.ArmorLivingEntityMixin",
+    "armor.DamageUtilMixin",
     "LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
-    "InGameHudMixin"
+    "armor.InGameHudMixin"
   ]
 }
